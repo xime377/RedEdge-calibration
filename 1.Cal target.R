@@ -1,5 +1,5 @@
 #Set WD
-#setwd("C:/Users/UAVstudent/Google Drive/MSc Thesis/Results")
+#setwd("E:/Ximena/MSc Thesis/Results")
 setwd("C:/Users/Ximena/Google Drive/MSc Thesis/Results")
 
 ###Load libraries
@@ -58,72 +58,58 @@ head(MicaR)
 
 ###Put all the values in one column
 
-#The loop places everything in one object 
- for (i in 1:length(Targets.l))
+for (i in 1:length(Targets))   #For all the df on the list
 {
-  Targets[[i]] <- Ref.melt(Targets[[i]])
-  assign(paste0("R.", names(Targets[[i]])), envir = .GlobalEnv)
+  Targets[[i]] <- Ref.melt(Targets[[i]])   #melt data
+  assign(paste0(names(Targets[i])), as.data.frame(Targets[[i]]))  #output as df
   }
 
 
-lapply((Targets.l), function(x) assign("Targets", Targets, envir = globalenv()))
-
-
-#Separate df
-R.Mica5 <- Ref.melt(Mica50Tgt)
-R.Mica8 <- Ref.melt(Mica80Tgt)
-R.M23<-Ref.melt(M23Tgt)
-R.M44<-Ref.melt(M44Tgt)
-R.M9<-Ref.melt(M9Tgt)
-
 #Plot reflectance curve per target
-p9<-plot.replicates(R.M9)
-p23<-plot.replicates(R.M23)
-p44<-plot.replicates(R.M44)
-p5<-plot.replicates(R.Mica5)
-p8<-plot.replicates(R.Mica8)
+p9<-plot.replicates(M9Tgt)
+p23<-plot.replicates(M23Tgt)
+p44<-plot.replicates(M44Tgt)
+p50<-plot.replicates(Mica50Tgt)
+p80<-plot.replicates(Mica80Tgt)
 
-plot_grid(p9,p23,p44,p5,p8, align="h")
+plot_grid(p9,p23,p44,p50,p80, align="h")
 
 
-#Calculate the mean of the replicates per target
+#Compute statistics from the Total ASD range
+Targets.p<-ls(pattern="R.M")
+Targets.r<-lapply(Targets.p,get)
+names(Targets.r)<-Targets.p
 
-# Mica50Tgt$Mean<-rowMeans(Mica50Tgt[,c(2:length(Mica50Tgt))])
-# Mica80Tgt$Mean<-rowMeans(Mica80Tgt[,c(2:length(Mica80Tgt))])
-# M9Tgt$Mean<-rowMeans(M9Tgt[,c(2:length(M9Tgt))])
-# M23Tgt$Mean<-rowMeans(M23Tgt[,c(2:length(M23Tgt))])
-# M44Tgt$Mean<-rowMeans(M44Tgt[,c(2:length(M44Tgt))])
+for (i in 1:length(Targets))   #For all the df on the list
+{
+  Targets[[i]] <- summarySE(Targets[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
+  assign(paste0("Sum.R",names(Targets[i])), as.data.frame(Targets[[i]]))  #output as df
+}
+cat("Statistics per replicate (ASD range)\n")
+summary(Sum.RM9Tgt)
+
 
 
 #Extract Reflectance values from 465 - 860 nm (Micasense 2015)
+for (i in 1:length(Targets))   #For all the df on the list
+{
+  Targets[[i]] <- Targets[[i]][(Targets[[i]]$Wavelength>=465) & (Targets[[i]]$Wavelength<=860), ]#subset
+  assign(paste0("R.",names(Targets[i])), as.data.frame(Targets[[i]]))  #output as df
+}
 
-Mica.Range<-R.Mica[(R.Mica$Wavelength>=465) & (R.Mica$Wavelength<=860),]
-# & (Ref$Wavelength>=550) & (Ref$Wavelength<=570) &
-#             (Ref$Wavelength>=663) & (Ref$Wavelength<=673) (Ref$Wavelength>=820) & (Ref$Wavelength<=860)
-#           (Ref$Wavelength>=712) & (Ref$Wavelength<=722),]
-# 
-#  Select.range <- function(Wl = Wl, Ref = Ref, Rep = Rep, CW = CW, FWHM = FWHM) {
-#   RangeM <- array(NA, length(Rep))
-#    #RangeSD <- array(NA, length(Rep))
-#    for (i in c(1:length(Rep))) {
-#      if ((CW[i] > (min(Wl, na.rm = T) + 2 * FWHM[i])) & 
-#         (CW[i] < (max(Wl, na.rm = T) - 2 * FWHM[i]))) {
-#        RangeM[i] <- fGaussianConvol(Wl = Wl, Ref = Ref, 
-#                                        CW = CW[i], FWHM = FWHM[i])
-#        RangeSD[i] <- fGaussianConvolSD(Wl = Wl, Ref = Ref, 
-#                                      CW = CW[i], FWHM = FWHM[i])
-#      }
-#    }
-#    return(data.frame(Rep = Replicate, RangeM = Mean, RangeSD = SD))
-#    }
-# 
-# Range <- Select.range(Wl = Ref[,1], Ref = Ref[,3], Rep= Ref [,2], CW = Mica[,3], FWHM = Mica[,4])
-summary(Mica.Range)
+summary(Targets$M9Tgt)
+summary(Targets$M23Tgt)
+summary(Targets$M44Tgt)
+summary(Targets$Mica50Tgt)
+summary(Targets$Mica80Tgt)
 
+#Compute statistics Micasense range
+Targets.p<-ls(pattern="R.M")
+Targets.r<-lapply(Targets.p,get)
+names(Targets.r)<-Targets.p
 
-Replicates.M<- summarySE(Mica.Range, measurevar="Reflectance", groupvars=c("Replicate")) #Computes stadistics
-cat("Statistics per replicate\n")
-Replicates.M
+#Range
+Replicates.RM<-
 
 
 ###Tests to see near Lambertian properties
@@ -179,15 +165,6 @@ Wave<-Ref$Wavelength
 fConvol(Wl = Wave, Wl_start = Wave[1], Wl_end = Wave[length(Wave)], Ref = Wave,fun = "mean") #Mean and SD of spetral range
 
 #Gaussian convolution
-
-for(i in Targets){
-  
-  for (i in 1:length(Ref))
-{
-  Ref[[i]] <- list(Ref.melt(Ref[[i]]))
-  assign(paste0("Ref.", names(Ref[[i]])), ref.m[[i]])
-}
-
 
 G.C.Mica<-fGaussianConvolMultiWl(Wl = R.Mica[,1], Ref = R.Mica[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
                               convol = "Gaussian", weights = NULL)
