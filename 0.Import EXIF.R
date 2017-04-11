@@ -1,7 +1,3 @@
-#Set Working Directory
-#setwd("C:/Users/UAVstudent/Google Drive/MSc Thesis/Results")
-setwd("C:/Users/Ximena/Google Drive/MSc Thesis/Results")
-
 #Load libraries
 library(exifr) #On windowsit is needed to install strawberry http://strawberryperl.com/
 
