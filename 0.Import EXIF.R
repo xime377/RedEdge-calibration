@@ -1,7 +1,6 @@
 #Load libraries
 library(exifr) #On windowsit is needed to install strawberry http://strawberryperl.com/
 
-
 #Load img
 dir(,"tif")
 T.img.path <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/Micasense/Flight_2/000"), (pattern=".tif$"), 
