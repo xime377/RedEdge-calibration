@@ -26,6 +26,7 @@ source("./lib/plot.replicates.R")
 source("./lib/Ref.melt.R")
 
 
+
 #Import reflectance values
 dir(,"csv")
 
@@ -60,33 +61,38 @@ head(MicaR)
 for (i in 1:length(Targets))   #For all the df on the list
 {
   Targets[[i]] <- Ref.melt(Targets[[i]])   #melt data
-  assign(paste0(names(Targets[i])), as.data.frame(Targets[[i]]))  #output as df
+  assign(paste0("M.",names(Targets[i])), as.data.frame(Targets[[i]]))  #output as df
   }
 
 
 #Plot reflectance curve per target
-p9<-plot.replicates(M9Tgt)
-p23<-plot.replicates(M23Tgt)
-p44<-plot.replicates(M44Tgt)
-p50<-plot.replicates(Mica50Tgt)
-p80<-plot.replicates(Mica80Tgt)
+p9<-plot.replicates(M.M9Tgt)
+p23<-plot.replicates(M.M23Tgt)
+p44<-plot.replicates(M.M44Tgt)
+p50<-plot.replicates(M.Mica50Tgt)
+p80<-plot.replicates(M.Mica80Tgt)
 
 plot_grid(p9,p23,p44,p50,p80, align="h")
 
 
 #Compute statistics from the Total ASD range
-Targets.p<-ls(pattern="R.M")
-Targets.r<-lapply(Targets.p,get)
-names(Targets.r)<-Targets.p
+Targets.m<-ls(pattern="M.M")
+Targets.T<-lapply(Targets.m,get)
+names(Targets.T)<-Targets.m
 
 for (i in 1:length(Targets))   #For all the df on the list
 {
-  Targets[[i]] <- summarySE(Targets[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
-  assign(paste0("Sum.R",names(Targets[i])), as.data.frame(Targets[[i]]))  #output as df
+Targets.T[[i]] <- summarySE(Targets.T[[i]], measurevar="Reflectance", groupvars=c("Wavelength"))
+assign(paste0(names(Targets.T[i])),Targets.T[[i]])
 }
-cat("Statistics per replicate (ASD range)\n")
-summary(Sum.RM9Tgt)
 
+
+cat("Statistics per replicate (ASD range)\n")
+summary(Targets.T$M.M9Tgt)
+summary(Targets.T$M.M23Tgt)
+summary(Targets.T$M.M44Tgt)
+summary(Targets.T$M.Mica50Tgt)
+summary(Targets.T$M.Mica80Tgt)
 
 
 #Extract Reflectance values from 465 - 860 nm (Micasense 2015)
@@ -108,31 +114,52 @@ Targets.r<-lapply(Targets.p,get)
 names(Targets.r)<-Targets.p
 
 #Range
-Replicates.RM<-
+# for (i in 1:length(Targets.r))   #For all the df on the list
+# {
+#   Targets.r[[i]] <- summarySE(Targets.r[[i]], measurevar="Reflectance", groupvars=c("Wavelength"))
+#   assign(paste0(names(Targets.r[i])),Targets.r[[i]])
+# }
+
+for (i in 1:length(Targets.r))   #For all the df on the list
+{
+  Targets.r[[i]] <- summarySE(Targets.r[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
+  assign(paste0(names(Targets.r[i])),Targets.r[[i]])
+}
+
+cat("Statistics per replicate (Micasense range)\n")
+summary(Targets.r$R.M9Tgt)
+summary(Targets.r$R.M23Tgt)
+summary(Targets.r$R.M44Tgt)
+summary(Targets.r$R.Mica50Tgt)
+summary(Targets.r$R.Mica80Tgt)
+
 
 
 ###Tests to see near Lambertian properties
 
 #Normality test -> Shapiro test
-n.test<-aggregate(Reflectance~Replicate,data=Mica.Range, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-
+n9.test<-aggregate(Reflectance~Replicate,data=R.M9Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n23.test<-aggregate(Reflectance~Replicate,data=R.M23Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n44.test<-aggregate(Reflectance~Replicate,data=R.M44Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n50.test<-aggregate(Reflectance~Replicate,data=R.Mica50Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n80.test<-aggregate(Reflectance~Replicate,data=R.Mica80Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
 
 ##Plot multiple qqplots together
 par(mfrow=c(2,3)) #plots 2 by 3 window
-for (i in c(2:7)){
-  qqnorm(MicaTgt[,i],main=names(MicaTgt)[i])
+for (i in c(2:3)){
+  qqnorm(R.Mica50Tgt[,i],main=names(R.Mica50Tgt)[i])
 }
 
 
 #Comparison test
 #anova test
-aov.test<-lm(Reflectance~Replicate, Mica.Range) 
+aov.test<-lm(Reflectance~Replicate, R.Mica50Tgt) 
 anova(aov.test)
 summary(aov.test)
 outp<-HSD.test(aov.test, "Replicate")
 
 #Kruskal-Wallis test 
-kruskal.test(Reflectance~Replicate, Mica.Range)
+kruskal.test(Reflectance~Replicate, R.Mica50Tgt)
 
 
 
