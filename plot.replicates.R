@@ -80,3 +80,21 @@ plot.byrep <- function(my_data)
   return(g)
 }
 
+
+plot.repR <- function(my_data)
+{
+  #function to plot gray replicates and the mean in black
+  g <- ggplot(my_data, aes(x = Wavelength, y = Reflectance)) + 
+    geom_line(aes(group=Replicate),size=0.2,colour="gray62") +
+    stat_summary(fun.y = "mean", colour = "black", size = 1, geom = "line")+
+    scale_x_continuous(breaks = seq(325, 1080, by = 30), 
+                       labels = insert_minor(seq(325, 860, by=150), 4), 
+                       limits = c(465, 860), expand = c(0, 0)) +
+    scale_y_continuous(breaks = seq(0, 1, by = 0.1), expand = c(0, -0.05), limits = c(-0.05, 1.05))+            #Set max 1
+    theme(axis.text=element_text(size=12),
+          axis.title=element_text(size=14,face="bold"))+
+    xlab("Wavelength (nm)") + ylab("Reflectance") +
+    background_grid(major = "none", minor = "none")
+  return(g)
+}
+
