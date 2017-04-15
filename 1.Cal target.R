@@ -80,10 +80,17 @@ Targets.m<-ls(pattern="M.M")
 Targets.T<-lapply(Targets.m,get)
 names(Targets.T)<-Targets.m
 
-for (i in 1:length(Targets))   #For all the df on the list
+# for (i in 1:length(Targets))   #For all the df on the list
+# {
+#   Targets.T[[i]] <- summarySE(Targets.T[[i]], measurevar="Reflectance", groupvars=c("Wavelength"))
+#   assign(paste0("S.",names(Targets.T[i])),Targets.T[[i]])
+# }
+
+
+for (i in 1:length(Targets.T))   #For all the df on the list
 {
-Targets.T[[i]] <- summarySE(Targets.T[[i]], measurevar="Reflectance", groupvars=c("Wavelength"))
-assign(paste0(names(Targets.T[i])),Targets.T[[i]])
+Targets.T[[i]] <- summarySE(Targets.T[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
+assign(paste0("S.",names(Targets.T[i])),as.data.frame(Targets.T[[i]]))
 }
 
 
@@ -94,7 +101,7 @@ summary(Targets.T$M.M44Tgt)
 summary(Targets.T$M.Mica50Tgt)
 summary(Targets.T$M.Mica80Tgt)
 
-
+###
 #Extract Reflectance values from 465 - 860 nm (Micasense 2015)
 for (i in 1:length(Targets))   #For all the df on the list
 {
@@ -107,6 +114,17 @@ summary(Targets$M23Tgt)
 summary(Targets$M44Tgt)
 summary(Targets$Mica50Tgt)
 summary(Targets$Mica80Tgt)
+
+
+#Plot reflectance curve per target (Micasense range)
+r9<-plot.repR(R.M9Tgt)
+r23<-plot.rep(R.M23Tgt)
+r44<-plot.repR(R.M44Tgt)
+r50<-plot.repR(R.Mica50Tgt)
+r80<-plot.repR(R.Mica80Tgt)
+
+plot_grid(r9,r23,r44,r50,r80, align="h")
+
 
 #Compute statistics Micasense range
 Targets.p<-ls(pattern="R.M")
@@ -153,20 +171,23 @@ for (i in c(2:3)){
 
 #Comparison test
 #anova test
-aov.test<-lm(Reflectance~Replicate, R.Mica50Tgt) 
-anova(aov.test)
-summary(aov.test)
-outp<-HSD.test(aov.test, "Replicate")
+aov.t9<-lm(Reflectance~Replicate, R.M9Tgt) 
+anova(aov.t9)
+summary(aov.t9)
+outp<-HSD.test(aov.t9, "Replicate")
+
 
 #Kruskal-Wallis test 
+kruskal.test(Reflectance~Replicate, R.M9Tgt)
+kruskal.test(Reflectance~Replicate, R.M23Tgt)
+kruskal.test(Reflectance~Replicate, R.M44Tgt)
 kruskal.test(Reflectance~Replicate, R.Mica50Tgt)
-
-
+kruskal.test(Reflectance~Replicate, R.Mica80Tgt)
 
 ##############################################
 ###Plot mean reflectance curve for the 4 targets
 
-Ref.T<-cbind(M9Tgt[,c("Wavelength", "Mean")],M23Tgt["Mean"],M44Tgt["Mean"], MicaTgt["Mean"])
+Ref.T<-cbind(M.M9Tgt[,c("Wavelength", "Reflectance")],M.M23Tgt["Reflectance"],M.M44Tgt["Reflectance"], M.MicaTgt["Reflectance"])
 names(Ref.T)<-c("Wavelength", "9%", "23%", "44%","Micasense")
 head(Ref.T)
 
@@ -184,6 +205,29 @@ ggplot(Ref.T, aes(x=Wavelength, y=Reflectance, colour=Target)) +
   theme(panel.grid.major = element_blank(),     #No grid
       legend.key = element_blank(),
       panel.grid.minor = element_blank())
+
+
+###Plot mean reflectance curve for the 4 targets (Micasense Range)
+
+Ref.T<-cbind(R.M9Tgt[,c("Wavelength", "Mean")],R.M23Tgt["Mean"],R.M44Tgt["Mean"], R.Mica50Tgt["Mean"], R.Mica80Tgt["Mean"])
+names(Ref.T)<-c("Wavelength", "10%", "23%", "44%","Micasense")
+head(Ref.T)
+
+Ref.T<-melt(Ref.T, id="Wavelength", variable.name= "Target", value.name = "Reflectance")
+
+ggplot(Ref.T, aes(x=Wavelength, y=Reflectance, colour=Target)) + 
+  geom_line(size=0.8)+
+  scale_colour_grey(name="")+
+  scale_x_continuous(breaks= seq(325,1080,by=30), 
+                     labels = insert_minor(seq(325, 1080, by=150),4), 
+                     limits = c(325,1080), expand =c(0,0)) +
+  scale_y_continuous(expand =c(0,-0.05), limits= c(-0.05, 1.05))+            #Set max 1
+  xlab("Wavelength (nm)")+ ylab("Reflectance")+
+  theme_bw()+                                                     #No grey background
+  theme(panel.grid.major = element_blank(),     #No grid
+        legend.key = element_blank(),
+        panel.grid.minor = element_blank())
+
 
 ##################################################################################
 #Analysis per band
