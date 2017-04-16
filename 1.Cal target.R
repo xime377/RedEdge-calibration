@@ -118,7 +118,7 @@ summary(Targets$Mica80Tgt)
 
 #Plot reflectance curve per target (Micasense range)
 r9<-plot.repR(R.M9Tgt)
-r23<-plot.rep(R.M23Tgt)
+r23<-plot.repR(R.M23Tgt)
 r44<-plot.repR(R.M44Tgt)
 r50<-plot.repR(R.Mica50Tgt)
 r80<-plot.repR(R.Mica80Tgt)
@@ -141,7 +141,7 @@ names(Targets.r)<-Targets.p
 for (i in 1:length(Targets.r))   #For all the df on the list
 {
   Targets.r[[i]] <- summarySE(Targets.r[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
-  assign(paste0(names(Targets.r[i])),Targets.r[[i]])
+  assign(paste0("S.",names(Targets.r[i])),Targets.r[[i]])
 }
 
 cat("Statistics per replicate (Micasense range)\n")
@@ -155,17 +155,17 @@ summary(Targets.r$R.Mica80Tgt)
 
 ###Tests to see near Lambertian properties
 
-#Normality test -> Shapiro test
-n9.test<-aggregate(Reflectance~Replicate,data=R.M9Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n23.test<-aggregate(Reflectance~Replicate,data=R.M23Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n44.test<-aggregate(Reflectance~Replicate,data=R.M44Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n50.test<-aggregate(Reflectance~Replicate,data=R.Mica50Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n80.test<-aggregate(Reflectance~Replicate,data=R.Mica80Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+#Normality test -> Shapiro test (w<0.99 and pvalue<0.05 shows non-normal distribution https://stats.stackexchange.com/questions/15696/interpretation-of-shapiro-wilk-test)
+n9.test<-aggregate(Reflectance~Replicate,data=M.M9Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n23.test<-aggregate(Reflectance~Replicate,data=M.M23Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n44.test<-aggregate(Reflectance~Replicate,data=M.M44Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n50.test<-aggregate(Reflectance~Replicate,data=M.Mica50Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
+n80.test<-aggregate(Reflectance~Replicate,data=M.Mica80Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
 
-##Plot multiple qqplots together
+##Plot multiple qqplots together (https://stats.stackexchange.com/questions/101274/how-to-interpret-a-qq-plot)
 par(mfrow=c(2,3)) #plots 2 by 3 window
-for (i in c(2:3)){
-  qqnorm(R.Mica50Tgt[,i],main=names(R.Mica50Tgt)[i])
+for (i in c(2:24)){
+  qqnorm(Mica50Tgt[,i],main=names(Mica50Tgt)[i])
 }
 
 
@@ -188,7 +188,7 @@ kruskal.test(Reflectance~Replicate, R.Mica80Tgt)
 ###Plot mean reflectance curve for the 4 targets
 
 Ref.T<-cbind(M.M9Tgt[,c("Wavelength", "Reflectance")],M.M23Tgt["Reflectance"],M.M44Tgt["Reflectance"], M.MicaTgt["Reflectance"])
-names(Ref.T)<-c("Wavelength", "9%", "23%", "44%","Micasense")
+names(Ref.T)<-c("Wavelength", "10%", "23%", "44%","Micasense")
 head(Ref.T)
 
 Ref.T<-melt(Ref.T, id="Wavelength", variable.name= "Target", value.name = "Reflectance")
