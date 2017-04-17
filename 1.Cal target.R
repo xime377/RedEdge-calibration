@@ -178,7 +178,7 @@ summary(Targets.r$R.Mica50Tgt)
 summary(Targets.r$R.Mica80Tgt)
 
 
-
+#########################################
 ###Tests to see near Lambertian properties
 
 #Normality test -> Shapiro test (w<0.99 and pvalue<0.05 shows non-normal distribution https://stats.stackexchange.com/questions/15696/interpretation-of-shapiro-wilk-test)
@@ -212,7 +212,7 @@ kruskal.test(Reflectance~Replicate, R.Mica80Tgt)
 
 
 ##############################################
-###Plot mean reflectance curve for the 4 targets
+###Plot mean reflectance curve for the 5 targets
 
 Ref.T<-cbind(W.M.M9Tgt[,c("Wavelength", "Reflectance")],W.M.M23Tgt["Reflectance"],W.M.M44Tgt["Reflectance"], W.M.Mica50Tgt["Reflectance"], W.M.Mica80Tgt["Reflectance"])
 names(Ref.T)<-c("Wavelength", "10%", "23%", "44%","50%", "80%")
@@ -223,7 +223,7 @@ Ref.T<-melt(Ref.T, id="Wavelength", variable.name= "Target", value.name = "Refle
 plot.grayS(Ref.T)
 
 
-###Plot mean reflectance curve for the 4 targets (Micasense Range)
+###Plot mean reflectance curve for the 5 targets (Micasense Range)
 
 Ref.M<-cbind(W.R.M9Tgt[,c("Wavelength", "Reflectance")],W.R.M23Tgt["Reflectance"],W.R.M44Tgt["Reflectance"], W.R.Mica50Tgt["Reflectance"], W.R.Mica80Tgt["Reflectance"])
 names(Ref.M)<-c("Wavelength", "10%", "23%", "44%","50%", "80%")
@@ -234,39 +234,40 @@ Ref.M<-melt(Ref.M, id="Wavelength", variable.name= "Target", value.name = "Refle
 plot.graySM(Ref.M)
 
 
-
 ##################################################################################
 ##Analysis per band
 
 #Gaussian convolution
 
-G.C.Mica<-fGaussianConvolMultiWl(Wl = R.Mica[,1], Ref = R.Mica[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
+GC.9<-fGaussianConvolMultiWl(Wl = M.M9Tgt[,1], Ref = M.M9Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
                               convol = "Gaussian", weights = NULL)
-G.C.Mica
 
-G.C.9<-fGaussianConvolMultiWl(Wl = Ref[,1], Ref = Ref[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
-                                 convol = "Gaussian", weights = NULL)
-G.C.9
+GC.23<-fGaussianConvolMultiWl(Wl = M.M23Tgt[,1], Ref = M.M23Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
+                             convol = "Gaussian", weights = NULL)
 
-T.range<-cbind()
+GC.44<-fGaussianConvolMultiWl(Wl = M.M44Tgt[,1], Ref = M.M44Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
+                             convol = "Gaussian", weights = NULL)
 
-write.csv(G.C.Mica,"Mean_Ref.csv")
+GC.50<-fGaussianConvolMultiWl(Wl = M.Mica50Tgt[,1], Ref = M.Mica50Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
+                              convol = "Gaussian")
+
+GC.80<-fGaussianConvolMultiWl(Wl = M.Mica80Tgt[,1], Ref = M.Mica80Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
+                                  convol = "Gaussian")
+
+
+Tar.Conv<-cbind(GC.9[,c(1:2)],GC.23[,2],GC.44[,2],GC.50[,2],GC.80[,2],
+                GC.9[,3],GC.23[,3],GC.44[,3],GC.50[,3],GC.80[,3])
+names(Tar.Conv)<-c("CWavelength","9","23","44","50","80","9.SD","23.SD", "44.SD","50.SD","80.SD")
 
 #Export as csv
-write.csv(T.range,"Mean_Ref")
+write.csv(Tar.Conv,"Mean_Ref.csv")
 
 
 
 
 #Plot Gray target reflectance RGB,Re,NIR
-plot(RefConvol~CWl.v, Gconv, xlab="")
+par(mfrow=c(1,1)) #plots 1
+plot(RefConvol~CWl.v, GC.23, xlab="")
 
-ggplot(Gconv, aes(x=#gray scale, y=RefConvol, colour=Band)) + 
-geom_point()+
-scale_y_continuous(expand =c(0,0))+     #Set max 1
-xlab("Wavelength (nm)")+ ylab("Reflectance")+
-theme_bw()+                               #No grey background
-theme(panel.grid.major = element_blank())+ # No grid
-theme(legend.key = element_blank())
 
 
