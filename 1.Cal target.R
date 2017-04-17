@@ -177,7 +177,7 @@ summary(aov.t9)
 outp<-HSD.test(aov.t9, "Replicate")
 
 
-#Kruskal-Wallis test 
+#Kruskal-Wallis test (less than 0.05, different)
 kruskal.test(Reflectance~Replicate, R.M9Tgt)
 kruskal.test(Reflectance~Replicate, R.M23Tgt)
 kruskal.test(Reflectance~Replicate, R.M44Tgt)
