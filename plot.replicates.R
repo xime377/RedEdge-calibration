@@ -89,8 +89,8 @@ plot.repR <- function(my_data)
   g <- ggplot(my_data, aes(x = Wavelength, y = Reflectance)) + 
     geom_line(aes(group=Replicate),size=0.2,colour="gray62") +
     stat_summary(fun.y = "mean", colour = "black", size = 1, geom = "line")+
-    scale_x_continuous(breaks = seq(325, 1080, by = 30), 
-                       labels = insert_minor(seq(325, 860, by=150), 4), 
+    scale_x_continuous(breaks = seq(465, 865, by = 20), 
+                       labels = insert_minor(seq(465, 865, by=100), 4), 
                        limits = c(465, 860), expand = c(0, 0)) +
     scale_y_continuous(breaks = seq(0, 1, by = 0.1), expand = c(0, -0.05), limits = c(-0.05, 1.05))+            #Set max 1
     theme(axis.text=element_text(size=12),
