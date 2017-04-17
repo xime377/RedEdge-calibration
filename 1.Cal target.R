@@ -86,6 +86,8 @@ for (i in 1:length(Targets))   #For all the df on the list
   assign(paste0("W.",names(Targets.T[i])),Targets.T[[i]])
 }
 
+Targets.T<-lapply(Targets.m,get)
+names(Targets.T)<-Targets.m
 
 for (i in 1:length(Targets.T))   #For all the df on the list
 {
@@ -140,6 +142,9 @@ for (i in 1:length(Targets.r))   #For all the df on the list
 }
 
 #Replicate
+Targets.r<-lapply(Targets.p,get)
+names(Targets.r)<-Targets.p
+
 for (i in 1:length(Targets.r))   #For all the df on the list
 {
   Targets.r[[i]] <- summarySE(Targets.r[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
@@ -186,11 +191,12 @@ kruskal.test(Reflectance~Replicate, R.M44Tgt)
 kruskal.test(Reflectance~Replicate, R.Mica50Tgt)
 kruskal.test(Reflectance~Replicate, R.Mica80Tgt)
 
+
 ##############################################
 ###Plot mean reflectance curve for the 4 targets
 
-Ref.T<-cbind(M.M9Tgt[,c("Wavelength", "Reflectance")],M.M23Tgt["Reflectance"],M.M44Tgt["Reflectance"], M.Mica50Tgt["Reflectance"], M.Mica80Tgt["Reflectance"])
-names(Ref.T)<-c("Wavelength", "10%", "23%", "44%","Micasense")
+Ref.T<-cbind(W.M.M9Tgt[,c("Wavelength", "Reflectance")],W.M.M23Tgt["Reflectance"],W.M.M44Tgt["Reflectance"], W.M.Mica50Tgt["Reflectance"], W.M.Mica80Tgt["Reflectance"])
+names(Ref.T)<-c("Wavelength", "10%", "23%", "44%","50%", "80%")
 head(Ref.T)
 
 Ref.T<-melt(Ref.T, id="Wavelength", variable.name= "Target", value.name = "Reflectance")
