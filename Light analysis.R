@@ -142,7 +142,9 @@ p44<-plot.bydates(M44Tgt)
 p50<-plot.bydates(Mica50Tgt)
 p80<-plot.bydates(Mica80Tgt)
 
-plot_grid(p9,p23,p44,p50,p80)
+plot_grid(p9,p23,p44,p50,p80,
+          labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = -7.5,
+          vjust = 2.5)
 
 
 #Add column with sky char
@@ -179,7 +181,10 @@ l44<-plot.byLC(M44Tgt)
 l50<-plot.byLC(Mica50Tgt)
 l80<-plot.byLC(Mica80Tgt)
 
-plot_grid(l9,l23,l44,l50,l80)
+plot_grid(l9,l23,l44,l50,l80,
+          labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = -6.5,
+          vjust = 4.5)
+          
 
 #Plot by replicate
 # r9<-plot.byrep(M9Tgt)
