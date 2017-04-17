@@ -201,46 +201,23 @@ head(Ref.T)
 
 Ref.T<-melt(Ref.T, id="Wavelength", variable.name= "Target", value.name = "Reflectance")
 
-ggplot(Ref.T, aes(x=Wavelength, y=Reflectance, colour=Target)) + 
-  geom_line(size=0.8)+
-  scale_colour_grey(name="")+
-  scale_x_continuous(breaks= seq(325,1080,by=30), 
-                     labels = insert_minor(seq(325, 1080, by=150),4), 
-                     limits = c(325,1080), expand =c(0,0)) +
-  scale_y_continuous(expand =c(0,-0.05), limits= c(-0.05, 1.05))+            #Set max 1
-  xlab("Wavelength (nm)")+ ylab("Reflectance")+
-  theme_bw()+                                                     #No grey background
-  theme(panel.grid.major = element_blank(),     #No grid
-      legend.key = element_blank(),
-      panel.grid.minor = element_blank())
+plot.grayS(Ref.T)
 
 
 ###Plot mean reflectance curve for the 4 targets (Micasense Range)
 
-Ref.T<-cbind(R.M9Tgt[,c("Wavelength", "Mean")],R.M23Tgt["Mean"],R.M44Tgt["Mean"], R.Mica50Tgt["Mean"], R.Mica80Tgt["Mean"])
-names(Ref.T)<-c("Wavelength", "10%", "23%", "44%","Micasense")
-head(Ref.T)
+Ref.M<-cbind(W.R.M9Tgt[,c("Wavelength", "Reflectance")],W.R.M23Tgt["Reflectance"],W.R.M44Tgt["Reflectance"], W.R.Mica50Tgt["Reflectance"], W.R.Mica80Tgt["Reflectance"])
+names(Ref.M)<-c("Wavelength", "10%", "23%", "44%","50%", "80%")
+head(Ref.M)
 
-Ref.T<-melt(Ref.T, id="Wavelength", variable.name= "Target", value.name = "Reflectance")
+Ref.M<-melt(Ref.M, id="Wavelength", variable.name= "Target", value.name = "Reflectance")
 
-ggplot(Ref.T, aes(x=Wavelength, y=Reflectance, colour=Target)) + 
-  geom_line(size=0.8)+
-  scale_colour_grey(name="")+
-  scale_x_continuous(breaks= seq(325,1080,by=30), 
-                     labels = insert_minor(seq(325, 1080, by=150),4), 
-                     limits = c(325,1080), expand =c(0,0)) +
-  scale_y_continuous(expand =c(0,-0.05), limits= c(-0.05, 1.05))+            #Set max 1
-  xlab("Wavelength (nm)")+ ylab("Reflectance")+
-  theme_bw()+                                                     #No grey background
-  theme(panel.grid.major = element_blank(),     #No grid
-        legend.key = element_blank(),
-        panel.grid.minor = element_blank())
+plot.graySM(Ref.M)
+
 
 
 ##################################################################################
-#Analysis per band
-Wave<-Ref$Wavelength
-fConvol(Wl = Wave, Wl_start = Wave[1], Wl_end = Wave[length(Wave)], Ref = Wave,fun = "mean") #Mean and SD of spetral range
+##Analysis per band
 
 #Gaussian convolution
 
@@ -274,5 +251,3 @@ theme(panel.grid.major = element_blank())+ # No grid
 theme(legend.key = element_blank())
 
 
-datetime<-"2017-02-23 14:13:59 CEST" #date of the measurement
-DOY<-DateToDOY(datetime)  #numeric vector containing the coverted date in Day Of the Year (DOY).
