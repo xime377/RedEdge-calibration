@@ -141,6 +141,14 @@ for (i in 1:length(Targets.r))   #For all the df on the list
   assign(paste0("W.",names(Targets.r[i])),Targets.r[[i]])
 }
 
+#CV (sd/mean)
+for (i in 1:length(Targets.r))   #For all the df on the list
+{
+  Targets.r[[i]]$cv <- (Targets.r[[i]]$sd/Targets.r[[i]]$Reflectance)*100
+  }
+summary(Targets.r$R.M23Tgt)
+
+
 #Replicate
 Targets.r<-lapply(Targets.p,get)
 names(Targets.r)<-Targets.p
