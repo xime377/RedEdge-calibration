@@ -26,7 +26,6 @@ source("./lib/plot.replicates.R")
 source("./lib/Ref.melt.R")
 
 
-
 #Import reflectance values
 dir(,"csv")
 
@@ -72,20 +71,24 @@ p44<-plot.replicates(M.M44Tgt)
 p50<-plot.replicates(M.Mica50Tgt)
 p80<-plot.replicates(M.Mica80Tgt)
 
-plot_grid(p9,p23,p44,p50,p80, align="h")
-
+plot_grid(p9,p23,p44,p50,p80, align="h", #all plots together
+          labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = -8.5,
+          vjust = 2.5)
 
 #Compute statistics from the Total ASD range
 Targets.m<-ls(pattern="M.M")
 Targets.T<-lapply(Targets.m,get)
 names(Targets.T)<-Targets.m
 
+#Per Wavelength
 for (i in 1:length(Targets))   #For all the df on the list
 {
   Targets.T[[i]] <- summarySE(Targets.T[[i]], measurevar="Reflectance", groupvars=c("Wavelength"))
   assign(paste0("W.",names(Targets.T[i])),Targets.T[[i]])
 }
 
+
+#Per replicate
 Targets.T<-lapply(Targets.m,get)
 names(Targets.T)<-Targets.m
 
@@ -102,6 +105,8 @@ summary(Targets.T$M.M23Tgt)
 summary(Targets.T$M.M44Tgt)
 summary(Targets.T$M.Mica50Tgt)
 summary(Targets.T$M.Mica80Tgt)
+
+
 
 ###
 #Extract Reflectance values from 465 - 860 nm (Micasense 2015)
@@ -125,8 +130,14 @@ r44<-plot.repR(R.M44Tgt)
 r50<-plot.repR(R.Mica50Tgt)
 r80<-plot.repR(R.Mica80Tgt)
 
-plot_grid(r9,r23,r44,r50,r80, align="h")
+plot_grid(r9,r23,r44,r50,r80, align="h",
+labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = -8.5,
+vjust = 2.5)
 
+
+plot_grid(r9,r23,r44,r50,r80, align="h",
+          labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = 0,
+          vjust = 1)
 
 #Compute statistics Micasense range
 Targets.p<-ls(pattern="R.M")
@@ -141,7 +152,7 @@ for (i in 1:length(Targets.r))   #For all the df on the list
   assign(paste0("W.",names(Targets.r[i])),Targets.r[[i]])
 }
 
-#CV (sd/mean)
+#Coefficient of variation (sd*100/mean)
 for (i in 1:length(Targets.r))   #For all the df on the list
 {
   Targets.r[[i]]$cv <- (Targets.r[[i]]$sd/Targets.r[[i]]$Reflectance)*100
@@ -185,14 +196,14 @@ for (i in c(2:24)){
 
 
 #Comparison test
-#anova test
+#anova test->parametric
 aov.t9<-lm(Reflectance~Replicate, R.M9Tgt) 
 anova(aov.t9)
 summary(aov.t9)
 outp<-HSD.test(aov.t9, "Replicate")
 
 
-#Kruskal-Wallis test (less than 0.05, different)
+#Kruskal-Wallis test (less than 0.05, different)-> non-parametric
 kruskal.test(Reflectance~Replicate, R.M9Tgt)
 kruskal.test(Reflectance~Replicate, R.M23Tgt)
 kruskal.test(Reflectance~Replicate, R.M44Tgt)
