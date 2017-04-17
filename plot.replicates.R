@@ -25,6 +25,7 @@ plot.replicates <- function(my_data)
   
 plot.bydates <- function(my_data)
 {
+  #function to plot replicates grouped by date
   d <-ggplot(my_data, aes(x = Wavelength, y = Reflectance, colour=Date)) + 
     geom_line(size=0.2) +
     scale_x_continuous(breaks = seq(325, 1080, by = 30), 
@@ -42,6 +43,7 @@ plot.bydates <- function(my_data)
 
 plot.byLC<-function(my_data)
 {
+  #Function to plot replicates grouped by light conditions
   l<-ggplot(my_data, aes(x = Wavelength, y = Reflectance, colour=Light)) + 
     geom_line(size=0.2) +
     scale_x_continuous(breaks = seq(325, 1080, by = 30), 
@@ -64,7 +66,7 @@ plot.byLC<-function(my_data)
 
 
 plot.byrep <- function(my_data)
-{
+{#Function to plot replicates on different colours
   g <- ggplot(my_data, aes(x = Wavelength, y = Reflectance, colour= Replicate)) + 
     geom_line(size=0.2) +
     stat_summary(fun.y = "mean", colour = "black", size = 1, geom = "line")+
@@ -83,7 +85,7 @@ plot.byrep <- function(my_data)
 
 plot.repR <- function(my_data)
 {
-  #function to plot gray replicates and the mean in black
+  #function to plot gray replicates and the mean in black (Micasense range)
   g <- ggplot(my_data, aes(x = Wavelength, y = Reflectance)) + 
     geom_line(aes(group=Replicate),size=0.2,colour="gray62") +
     stat_summary(fun.y = "mean", colour = "black", size = 1, geom = "line")+
@@ -98,3 +100,36 @@ plot.repR <- function(my_data)
   return(g)
 }
 
+plot.grayS<-function(my_data)
+{
+ #Function to plot lines on gray scale (lower values darker)
+    g<-ggplot(my_data, aes(x=Wavelength, y=Reflectance, colour=Target)) + 
+    geom_line(size=0.8)+
+    scale_colour_grey(name="")+
+    scale_x_continuous(breaks= seq(325,1080,by=30), 
+                       labels = insert_minor(seq(325, 1080, by=150),4), 
+                       limits = c(325,1080), expand =c(0,0)) +
+    scale_y_continuous(expand =c(0,-0.05), limits= c(-0.05, 1.05))+            #Set max 1
+      theme(axis.text=element_text(size=12),
+            axis.title=element_text(size=14,face="bold"))+
+      xlab("Wavelength (nm)") + ylab("Reflectance") +
+      background_grid(major = "none", minor = "none")
+    return(g)
+}
+
+plot.graySM<-function(my_data)
+{
+  #Function to plot lines on gray scale (Micasense Range)
+  g<-ggplot(my_data, aes(x=Wavelength, y=Reflectance, colour=Target)) + 
+    geom_line(size=0.8)+
+    scale_colour_grey(name="")+
+    scale_x_continuous(breaks= seq(325,1080,by=30), 
+                       labels = insert_minor(seq(325, 1080, by=150),4), 
+                       limits = c(325,1080), expand =c(0,0)) +
+    scale_y_continuous(expand =c(0,-0.05), limits= c(-0.05, 1.05))+            #Set max 1
+    theme(axis.text=element_text(size=12),
+          axis.title=element_text(size=14,face="bold"))+
+    xlab("Wavelength (nm)") + ylab("Reflectance") +
+    background_grid(major = "none", minor = "none")
+  return(g)
+}
