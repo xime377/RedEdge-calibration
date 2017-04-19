@@ -30,6 +30,7 @@ str(MM23)
 
 ##Regression x=DN, y=mean reflectance targets
 
+#Create a common column
 MM9$X<-substr(MM9$Band,10,10)
 MM23$X<-substr(MM23$Band,10,10)
 MM44$X<-substr(MM44$Band,10,10)
@@ -38,18 +39,35 @@ MM80$X<-substr(MM80$Band,10,10)
 
 head(MM44)
 
-M9<-merge(MM9, S[,c(1:2,3)], by="X")
-head(M9)
-M23<-merge(MM23, S[,c(1:2,4)], by="X")
-head(M23)
-M44<-merge(MM44, S[,c(1:2,5)], by="X")
-head(M44)
-M50<-merge(MM50, S[,c(1:2,6)], by="X")
-head(M50)
-M80<-merge(MM80, S[,c(1:2,7)], by="X")
-head(M80)
+#Join the two datasets using the column X 
+T9<-merge(MM9, S[,c(1:2,3)], by="X")
+names(T9)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
+head(T9)
+T23<-merge(MM23, S[,c(1:2,4)], by="X")
+names(T23)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
+head(T23)
+T44<-merge(MM44, S[,c(1:2,5)], by="X")
+names(T4)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
+head(T44)
+T50<-merge(MM50, S[,c(1:2,6)], by="X")
+names(T50)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
+head(T50)
+T80<-merge(MM80, S[,c(1:2,7)], by="X")
+names(T80)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
+head(T80)
 
 
+summary(T9$X9)
+summary(T23$X23)
+summary(T44$X44)
+summary(T50$X50)
+summary(T80$X80)
+
+#Combine all the df into one
+
+RefT<-rbind(T9,T23,T44,T50,T80)
+  
+  
 #Plot Gray target reflectance vs DNs
 
 
