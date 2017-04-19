@@ -10,7 +10,7 @@ library(raster)
 library(maptools)
 library(stringr)
 library(Rmisc)
-library(mapview)
+
 
 #Load imgs
 dir(,"tif")
@@ -455,6 +455,7 @@ Ext.52 <- drawExtent()
 
 
 ##########################################################################################
+
 #Extract values
 cat("Extracting target pixels\n")
 MM9.1<- extract(img1, Ext.1, df=T)
@@ -510,6 +511,9 @@ MM80.20<- extract(img50, Ext.50, df=T)
 MM80.21<- extract(img51, Ext.51, df=T)
 MM80.22<- extract(img52, Ext.52, df=T)
 
+
+################################################################################
+
 ##Calculate mean pixel values under each target polygon for each image band
 L.val<-ls(pattern="MM")
 T.val<-lapply(L.val,get)
@@ -530,5 +534,48 @@ names(T.val)<-L.val
 for (i in 1:length(L.val))   #For all the df on the list
 {
   T.val[[i]] <- summarySE(T.val[[i]], measurevar="DN", groupvars="Band")
-  assign(paste0("S.",names(T.val[i])),T.val[[i]])
+  assign(paste0("S.",substr(names(T.val[i]),3,9)),T.val[[i]])
 }
+
+
+##############################################################################
+
+#Combine the df according to the target
+#9
+L.MM9<-ls(pattern="S.MM9")
+L.MM9<-lapply(L.MM9,get)
+MM9<-do.call("rbind", L.MM9)
+
+write.csv(MM9,"MM9.csv")
+
+
+#23
+L.MM23<-ls(pattern="S.MM23")
+L.MM23<-lapply(L.MM23,get)
+MM23<-do.call("rbind", L.MM23)
+
+write.csv(MM23,"MM23.csv")
+
+#44
+L.MM44<-ls(pattern="S.MM44")
+L.MM44<-lapply(L.MM44,get)
+MM44<-do.call("rbind", L.MM44)
+
+write.csv(MM44,"MM44.csv")
+
+#50
+L.MM50<-ls(pattern="S.MM50")
+L.MM50<-lapply(L.MM50,get)
+MM50<-do.call("rbind", L.MM50)
+
+write.csv(MM50,"MM50.csv")
+
+#80
+L.MM80<-ls(pattern="S.MM80")
+L.MM80<-lapply(L.MM80,get)
+MM80<-do.call("rbind", L.MM80)
+
+write.csv(MM80,"MM80.csv") #Export as csv
+
+#End
+#########################################
