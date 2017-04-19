@@ -1,5 +1,5 @@
 #Set WD
-#setwd("C:/Users/UAVstudent/Google Drive/MSc Thesis/Results")
+#setwd("E:/Ximena/MSc Thesis/Results")
 setwd("C:/Users/Ximena/Google Drive/MSc Thesis/Results")
 
 ###Load libraries
@@ -13,39 +13,55 @@ library(stringr)
 library(Rmisc)
 library(mapview)
 
-#Load imgs
-dir(,"tif")
-T.img.path <- lapply(list.files(path=("./Calibration/Micasense test 23-02-17/000"), (pattern="0004.*.tif$"), 
-                                full.names=T), raster) #Load all bands
-T.img <- stack(T.img.path)
-beginCluster()#to speed up the process
-plotRGB(T.img, r=3, g=2, b=1, 65535, colNA='white')  #PlotRGB
-endCluster()
+#Load functions
+source("./lib/load.file.R")
 
-cubeView(T.img) #Click on show in new window
+#Load data
+dir(,"csv")
 
-# PLot G band 
-plot(T.img@layers[[2]])  #Plot G band
+S<-read.csv("./Calibration/Mean_Ref.csv", header=T)
+head(S)
 
-#Select target extent
-cat("Click two points to define the target\n")
-Mica.E <- drawExtent()
+C.path<-"./Calibration/Cal_pics/"
+load.file(C.path, "MM.*.csv")
 
-#Calculate mean pixel values under each target polygon for each image band
-cat("Extracting target pixels\n")
-Mica.v <- extract(T.img, Mica.E, df=T)
-Mica.L <- melt(Mica.v, variable.name="Band", value.name = "DN") #Puts all the values in one column
-head(Mica.L)
+head(MM23)
+str(MM23)
 
-Mica.M<- summarySE(Mica.L, measurevar="DN", groupvars="Band")
-Mica.M
+##Regression x=DN, y=mean reflectance targets
+
+MM9$X<-substr(MM9$Band,10,10)
+MM23$X<-substr(MM23$Band,10,10)
+MM44$X<-substr(MM44$Band,10,10)
+MM50$X<-substr(MM50$Band,10,10)
+MM80$X<-substr(MM80$Band,10,10)
+
+head(MM44)
+
+M9<-merge(MM9, S[,c(1:2,3)], by="X")
+head(M9)
+M23<-merge(MM23, S[,c(1:2,4)], by="X")
+head(M23)
+M44<-merge(MM44, S[,c(1:2,5)], by="X")
+head(M44)
+M50<-merge(MM50, S[,c(1:2,6)], by="X")
+head(M50)
+M80<-merge(MM80, S[,c(1:2,7)], by="X")
+head(M80)
+
+
+#Plot Gray target reflectance vs DNs
+
+
+
+
 
 
 ##Regression x=DN, y=mean reflectance targets
-#Load data
-dir(,"csv")
-Mica.R<-read.csv("Mean_Ref.csv", header=T)
-head(Mica.R)
+
+
+
+
 
 #Combine data
 Merge.M<-cbind(Mica.R,Mica.M)
