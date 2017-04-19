@@ -47,7 +47,7 @@ T23<-merge(MM23, S[,c(1:2,4)], by="X")
 names(T23)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
 head(T23)
 T44<-merge(MM44, S[,c(1:2,5)], by="X")
-names(T4)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
+names(T44)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
 head(T44)
 T50<-merge(MM50, S[,c(1:2,6)], by="X")
 names(T50)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Reflectance")
@@ -57,15 +57,23 @@ names(T80)<-c("Band", "iName", "N", "DN", "sd", "se", "ci", "CWavelength", "Refl
 head(T80)
 
 
+
 summary(T9$X9)
 summary(T23$X23)
 summary(T44$X44)
 summary(T50$X50)
 summary(T80$X80)
 
-#Combine all the df into one
-
+##Combine all the df into one
 RefT<-rbind(T9,T23,T44,T50,T80)
+
+
+#Split per band
+B<-RefT[RefT$Band==1,]
+G<-RefT[RefT$Band==2,]
+R<-RefT[RefT$Band==3,]
+NIR<-RefT[RefT$Band==4,]
+Re<-RefT[RefT$Band==5,]
   
   
 #Plot Gray target reflectance vs DNs
@@ -78,21 +86,6 @@ RefT<-rbind(T9,T23,T44,T50,T80)
 ##Regression x=DN, y=mean reflectance targets
 
 
-
-
-
-#Combine data
-Merge.M<-cbind(Mica.R,Mica.M)
-Merge.M
-
-#Split per band
-B<-Merge.M[which(Merge.M$CWl.v==475),]
-G<-
-R<-
-NIR<-
-Re<-
-  
-  
 #Linear regression
 #Band 1
 regr.l1 <-lm(RefConvol~DN, B)
