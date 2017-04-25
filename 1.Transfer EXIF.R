@@ -30,13 +30,7 @@ for(i in 1:length(T.img.H)) #Create the command
   T.img.H[i] <- (paste0("-tagsfromfile C:/Users/Ximena/Lonnstorp/2017_04_08/Micasense/Flight_2/000/",T.img.O[i],
                         " -all:all -makernotes -make -model -P -overwrite_original C:/Users/Ximena/Lonnstorp/2017_04_08/Micasense/Flight_2/H/",T.img.O[i]))
   
-}
-
-
-#Copy the exif to the new imgs
-for(i in 1:length(T.img.H))
-{
-  exiftool.call(T.img.H[i])              
+  exiftool.call(T.img.H[i])    #Copy the exifs to the new imgs          
 }
 
 
