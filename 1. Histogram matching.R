@@ -93,7 +93,7 @@ for (i in 1:length(T.img2))
 for (i in 1:length(T.img3))   
 {
   T.img3[[i]] <- histMatch(T.img3[[i]],T.img3[[32]])   #histogram matching imgage 31
-  writeRaster(T.img3[[i]],paste0("./Lonnstorp/2021_04_08/Micasense/Flight_2/H/",
+  writeRaster(T.img3[[i]],paste0("./Lonnstorp/2017_04_08/Micasense/Flight_2/H/",
                                 substr(names(T.img3[i]),47,56),".tif"),datatype="INT2U",
   options="COMPRESS=NONE")
 }
@@ -105,7 +105,7 @@ for (i in 1:length(T.img3))
 for (i in 1:length(T.img4))   
 {
   T.img4[[i]] <- histMatch(T.img4[[i]],T.img4[[32]])   #histogram matching imgage 31
-  writeRaster(T.img4[[i]],paste0("./Lonnstorp/2021_04_08/Micasense/Flight_2/H/",
+  writeRaster(T.img4[[i]],paste0("./Lonnstorp/2017_04_08/Micasense/Flight_2/H/",
                                  substr(names(T.img4[i]),47,56),".tif"),datatype="INT2U",
               options="COMPRESS=NONE")
 }
@@ -117,7 +117,7 @@ for (i in 1:length(T.img4))
 for (i in 1:length(T.img5))   
 {
   T.img5[[i]] <- histMatch(T.img5[[i]],T.img5[[32]])   #histogram matching imgage 31
-  writeRaster(T.img5[[i]],paste0("./Lonnstorp/2021_04_08/Micasense/Flight_2/H/",
+  writeRaster(T.img5[[i]],paste0("./Lonnstorp/2017_04_08/Micasense/Flight_2/H/",
                                  substr(names(T.img5[i]),47,56),".tif"),datatype="INT2U",
               options="COMPRESS=NONE")
 }
