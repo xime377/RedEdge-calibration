@@ -11,7 +11,6 @@ library(raster)
 library(maptools)
 library(stringr)
 library(Rmisc)
-library(mapview)
 library(cowplot)
 
 #Load functions
