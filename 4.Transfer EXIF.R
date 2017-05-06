@@ -1,6 +1,6 @@
 #Set WD
 #setwd("H:/Ximena/MSc Thesis/Results/UAV imagery/")
-setwd("C:/Users/Ximena/Google Drive/MSc Thesis/Results/UAV imagery/")
+setwd("D:/Google Drive/MSc Thesis/Results/UAV imagery/")
 
 
 #Load libraries
