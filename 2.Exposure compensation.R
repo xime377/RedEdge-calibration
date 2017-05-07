@@ -7,6 +7,7 @@ setwd("D:/Google Drive/MSc Thesis/Results")
 #pacman::p_load(agricolae, Rmisc) To install several packages at the same time
 library(raster)
 
+
 #Load functions
 source("./lib/Exposure.Compensation.R")
 
@@ -15,9 +16,11 @@ exif<-read.csv("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/000/2017_0
 head(exif)
 
 #Load images
-T.img<- lapply(list.files(path=("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/000"), (pattern=".tif$"), 
-                                full.names=T), raster) #Load all bands
+T.img.path<- list.files(path=("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/000"), (pattern=".tif$"), 
+                                full.names=T) #List images
 
+T.img<- lapply(T.img.path,raster) #Load all bands
+names(T.img)<-T.img.path
 
 #Individual test
 #z=EC(T.img[[1]],exif$FNumber[1],exif$ExposureTime[1],exif$ISOSpeed[1])
@@ -28,7 +31,11 @@ T.img<- lapply(list.files(path=("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Fl
 for (i in 1:length(T.img))   
 {
     T.img[[i]]<-EC(T.img[[i]],exif$FNumber[i],exif$ExposureTime[i],exif$ISOSpeed[i])
-    writeRaster(T.img[[i]],paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/EC/",
-                              substr(names(T.img[i]),47,56),".tif"),
+  writeRaster(T.img[[i]],paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/EC/",
+                              substr(names(T.img[i]),59,68),".tif"), datatype="INT2U",
             options="COMPRESS=NONE", overwrite=T)  
 }
+
+
+##End
+######
