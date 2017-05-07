@@ -178,7 +178,7 @@ abline(LR.5,col="red",lwd=2)
 #Plot all bands together
 ggplot(RefT, aes(x = DN, y = Reflectance, colour=Band)) + 
   geom_point()+
-  geom_line()+
+  geom_smooth(method = "lm", se=F)+
   scale_y_continuous(expand = c(0, -0.05), limits = c(-0.05, 1.05))+            #Set max 1
   theme(axis.text=element_text(size=12),
         axis.title=element_text(size=14,face="bold"))+
