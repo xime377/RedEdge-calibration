@@ -156,8 +156,17 @@ summary(LR.5)
 plot(Reflectance~DN, Re)  
 abline(LR.5)
 
+#Plot all in one
+ggplot(RefT, aes(x = DN, y = Reflectance, colour=Band)) + 
+  geom_point()+
+  geom_line()+
+  scale_y_continuous(expand = c(0, -0.05), limits = c(-0.05, 1.05))+            #Set max 1
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=14,face="bold"))+
+  xlab("Digital Number (DN)") + ylab("Reflectance") +
+  background_grid(major = "none", minor = "none")
 
-
+#################################################################################################
 #Exponential (http://stackoverflow.com/questions/31851936/exponential-curve-fitting-in-r)
 ##Natural logarithm of the reflectance
 plot((log(Reflectance))~(log(DN)), RefT)  
@@ -173,11 +182,4 @@ ER.1 <- nls(Reflectance ~ (DN^b), data = B, start = c(b = 0), trace = T)
 
 
 
-ggplot(RefT, aes(x = DN, y = Reflectance, colour=Band)) + 
-  geom_point()+
-  geom_line()+
-  scale_y_continuous(expand = c(0, -0.05), limits = c(-0.05, 1.05))+            #Set max 1
-  theme(axis.text=element_text(size=12),
-        axis.title=element_text(size=14,face="bold"))+
-  xlab("Digital Number (DN)") + ylab("Reflectance") +
-  background_grid(major = "none", minor = "none")
+
