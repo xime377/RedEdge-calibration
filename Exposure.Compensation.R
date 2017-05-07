@@ -9,7 +9,7 @@
 
 EC<-function(r, f, e, k){
 
-  x=(r*(f^2))/(e*k)  
+  x=(r*(f^2))/(10*e*k)  
 }
 
 
