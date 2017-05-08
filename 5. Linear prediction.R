@@ -126,32 +126,32 @@ for (i in 1:length(T.img1)){
 #Band2
 for (i in 1:length(T.img2)){
   T.img2[[i]]<- LC(Coef$m[2], T.img2[[i]], Coef$c[2])
-  writeRaster(T.img1[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
-                                  substr(names(T.img1[i]),58,67),".tif"), datatype="INT2U",
+  writeRaster(T.img2[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
+                                  substr(names(T.img2[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)
 }
 
 #Band3
 for (i in 1:length(T.img3)){
-  T.img3[[i]]<- LC(Coef$m[2], T.img3[[i]], Coef$c[2])
-  writeRaster(T.img1[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
-                                  substr(names(T.img1[i]),58,67),".tif"), datatype="INT2U",
+  T.img3[[i]]<- LC(Coef$m[3], T.img3[[i]], Coef$c[3])
+  writeRaster(T.img3[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
+                                  substr(names(T.img3[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)
 }
 
 #Band4
 for (i in 1:length(T.img4)){
   T.img4[[i]]<- LC(Coef$m[2], T.img4[[i]], Coef$c[2])
-  writeRaster(T.img1[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
-                                  substr(names(T.img1[i]),58,67),".tif"), datatype="INT2U",
+  writeRaster(T.img4[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
+                                  substr(names(T.img4[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)
 }
 
 #Band5
 for (i in 1:length(T.img5)){
   T.img5[[i]]<- LC(Coef$m[2], T.img5[[i]], Coef$c[2])
-  writeRaster(T.img1[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
-                                  substr(names(T.img1[i]),58,67),".tif"), datatype="INT2U",
+  writeRaster(T.img5[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
+                                  substr(names(T.img5[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)
 }
 
