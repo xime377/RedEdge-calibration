@@ -141,7 +141,7 @@ for (i in 1:length(T.img3)){
 
 #Band4
 for (i in 1:length(T.img4)){
-  T.img4[[i]]<- LC(Coef$m[2], T.img4[[i]], Coef$c[2])
+  T.img4[[i]]<- LC(Coef$m[4], T.img4[[i]], Coef$c[4])
   writeRaster(T.img4[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
                                   substr(names(T.img4[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)
@@ -149,13 +149,9 @@ for (i in 1:length(T.img4)){
 
 #Band5
 for (i in 1:length(T.img5)){
-  T.img5[[i]]<- LC(Coef$m[2], T.img5[[i]], Coef$c[2])
+  T.img5[[i]]<- LC(Coef$m[5], T.img5[[i]], Coef$c[5])
   writeRaster(T.img5[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/Reflectance/",
                                   substr(names(T.img5[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)
 }
 
-
-
-#End
-########
