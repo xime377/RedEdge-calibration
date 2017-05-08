@@ -25,9 +25,11 @@ SC<-function(R,DN,c){
 
 LC<-function(m,DN,c){
   
-R= (m*10000*DN)-c  
+R= (m*100000*DN)-(c*100000)  
 return(R)
 }
+
+##################################################
 
 #RedEdge considers 32768 100% of reflectance
 
