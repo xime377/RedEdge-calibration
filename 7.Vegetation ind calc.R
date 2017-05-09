@@ -10,45 +10,54 @@ library(raster)
 
 
 #Load functions
-source("./lib/Veg.indices.R")
+devtools::load_all("VegIndx")
 
 ##Load orthomosaics
 
 O1<- stack("./UAV imagery/Lonnstorp/2017_04_08/Agisoft/Flight_2/Orthomosaic/Lonnstorp_08_04_2017_2_ReflectanceT.tif")
 
-plotRGB(O1, r=3, g=2, b=1, 65535, colNA='white')  #PlotRGB
-
 
 ##Calculate vegetation indices
 
 #TCARI/OSAVI
-T.O<-EVI(O1)
-plot(T.O)
-writeRaster(T.O, "./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_TCARI_OSAVI.tif",
-                        datatype="INT2U",   options="COMPRESS=NONE", overwrite=T)
-
+tcariOsavi<-TCARI.OSAVI(O1)
+names(tcariOsavi)<-"TCARI/OSAVI"
+  
 #GI
 gi<-GI(O1)
-plot (Gi)
-writeRaster(Gi, "./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_GI.tif",
-            datatype="INT2U",   options="COMPRESS=NONE", overwrite=T)
+names(gi)<-"GI"
 
-#NDVI green
+#NDVI 
 ndvi<-NDVI(O1)
-plot(ndvi)
-writeRaster(ndvi, "./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_NDVI.tif",
-            datatype="INT2U",   options="COMPRESS=NONE", overwrite=T)
-
-
-#NDVRe ndvi2
+names(ndvi)<-"NDVI"
+  
+#NDRe 
+ndrei<-NDRe(O1)
+names(ndrei)<-"NDRe"
 
 #Evi
+evi<-EVI(O1)
+names(evi)<-"EVI"
 
-remove
-VI<-
 
+#Group VI
+VI.list<-ls(patter="i")
+VI<-lapply(VI.list,get)
+names(VI)<-VI.list
+
+
+#Vizualise all together
+par(mfrow=c(3,2))
+
+for (i in 1:length(VI))
+  {plot(VI[[i]])}  
+  
+plotRGB(O1, r=3, g=2, b=1, 65535, colNA='white')  #PlotRGB 
+  
+   
 #Save them as raster
-
-for (i in lenght())
+for (i in 1:length(VI))
+  writeRaster(VI[[i]], paste0("./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_", 
+                       names(VI[i])), datatype="INT2U",   options="COMPRESS=NONE", overwrite=T)
 
 
