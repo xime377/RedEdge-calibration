@@ -53,8 +53,8 @@ plot.byLC<-function(my_data)
     scale_color_manual(
     values = c(
       "Clear sky"="#00e6e6", 
-      "Cloudy"="#66a3ff",
-      "Overcast"="#2c7fb8"))+
+      "Cloudy"="#4d4dff",
+      "Overcast"="#636363"))+
     theme(legend.title = element_blank(),
     axis.text=element_text(size=12),
     axis.title=element_text(size=14,face="bold"))+
@@ -132,4 +132,18 @@ plot.graySM<-function(my_data)
     xlab("Wavelength (nm)") + ylab("Reflectance") +
     background_grid(major = "none", minor = "none")
   return(g)
+}
+
+
+plot.irrad<-function(my_data)
+{
+  #Function to plot irradiance replicates on different colours
+  g<-ggplot(my_data, aes(x = Wavelength, y = Irradiance, colour=Rep)) + 
+    geom_line()+
+    scale_y_continuous(expand = c(0, -0.05), limits = c(-0.05, 1.2))+            
+    theme(axis.text=element_text(size=12),
+          axis.title=element_text(size=14,face="bold"))+
+    xlab("Wavelength (nm)") + ylab("Irradiance (W/m2/nm)") +
+    background_grid(major = "none", minor = "none")
+    return(g)
 }
