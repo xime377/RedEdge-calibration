@@ -138,8 +138,8 @@ plot.graySM<-function(my_data)
 plot.irrad<-function(my_data)
 {
   #Function to plot irradiance replicates on different colours
-  g<-ggplot(my_data, aes(x = Wavelength, y = Irradiance, colour=Rep)) + 
-    geom_line()+
+  g<-ggplot(my_data, aes(x = Wavelength, y = Irradiance, colour=Time)) + 
+    geom_line(size=0.8)+
     scale_y_continuous(expand = c(0, -0.05), limits = c(-0.05, 1.2))+            
     theme(axis.text=element_text(size=12),
           axis.title=element_text(size=14,face="bold"))+
