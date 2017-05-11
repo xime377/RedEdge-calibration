@@ -1,15 +1,19 @@
 #Set WD
 #setwd("E:/Ximena/MSc Thesis/Results")
-setwd("C:/Users/Ximena/Google Drive/MSc Thesis/Results")
+setwd("D:/Google Drive/MSc Thesis/Results")
 
 ###Load libraries
 #install.packages("C:/Users/Ximena/Documents/R/FieldSpectroscopyDP_0.5.227.tar", repos = NULL,  type="source")
 #install.packages("E:/FieldSpectroscopyDP_0.5.227.tar", repos = NULL,  type="source")
 
-library("FieldSpectroscopyDP")
-library(splines) #Dependency of F..DP
-if(!require(SDMTools)) install.packages("SDMTools") #Dependency F...DP
-library(SDMTools) #Dependency F...DP
+if(!require(devtools)) install.packages("devtools") #Dependencies of F..DP
+if(!require(FieldSpectroscopyCC)) install_github("tommasojulitta/FieldSpectroscopyCC") 
+library(FieldSpectroscopyCC)
+if(!require(FieldSpectroscopyDP)) install_github("tommasojulitta/FieldSpectroscopyDP") 
+library(FieldSpectroscopyDP)
+library(splines)
+if(!require(SDMTools)) install.packages("SDMTools")
+library(SDMTools)
 
 #library(pacman)
 #pacman::p_load(agricolae, Rmisc, ggplot2, cowplot) To install several packages at the same time
@@ -264,10 +268,7 @@ write.csv(Tar.Conv,"Mean_Ref.csv")
 
 
 
-
+#######################################
 #Plot Gray target reflectance RGB,Re,NIR
 par(mfrow=c(1,1)) #plots 1
-plot(RefConvol~CWl.v, GC.23, xlab="")
-
-
-
+plot(RefConvol~CWl.v, GC.23, xlab="Wavelength (nm)") #test
