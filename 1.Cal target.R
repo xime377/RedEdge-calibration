@@ -3,9 +3,6 @@
 setwd("D:/Google Drive/MSc Thesis/Results")
 
 ###Load libraries
-#install.packages("C:/Users/Ximena/Documents/R/FieldSpectroscopyDP_0.5.227.tar", repos = NULL,  type="source")
-#install.packages("E:/FieldSpectroscopyDP_0.5.227.tar", repos = NULL,  type="source")
-
 if(!require(devtools)) install.packages("devtools") #Dependencies of F..DP
 if(!require(FieldSpectroscopyCC)) install_github("tommasojulitta/FieldSpectroscopyCC") 
 library(FieldSpectroscopyCC)
@@ -76,7 +73,7 @@ p50<-plot.replicates(M.Mica50Tgt)
 p80<-plot.replicates(M.Mica80Tgt)
 
 plot_grid(p9,p23,p44,p50,p80, align="h", #all plots together
-          labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = -8.5,
+          labels = c("10%","23%", "44%","55%", "66%"), label_size = 14, hjust = -8.5,
           vjust = 2.5)
 
 #Compute statistics from the Total ASD range
