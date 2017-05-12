@@ -90,7 +90,6 @@ write.csv(RefT,"RefTargetsEC_w44.csv")
 plot(Reflectance~DN, RefT)
 
 
-
 #Split per band
 B<-RefT[RefT$Band==1,]
 G<-RefT[RefT$Band==2,]
