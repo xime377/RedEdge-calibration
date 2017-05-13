@@ -71,8 +71,8 @@ head(T80)
 
 T9$Lab<-"MM10"
 T23$Lab<-"MM23"
-T50$Lab<-"MS50"
-T80$Lab<-"MS80"
+T50$Lab<-"MS55"
+T80$Lab<-"MS66"
   
 summary(T9)
 summary(T23)
@@ -88,6 +88,7 @@ write.csv(RefT,"RefTargetsEC_w44.csv")
 
 #Plot Gray target reflectance vs DNs
 plot(Reflectance~DN, RefT)
+
 
 
 #Split per band
@@ -153,25 +154,30 @@ plot(LR.5)
 
 ##########################Plot all together
 par(mfrow=c(2,3))
-plot(Reflectance~DN, B, font.lab=2,cex.lab=1.4, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000, 360000))  
-text(Reflectance~DN, B, Lab, cex=1.4, pos=3)
+plot(Reflectance~DN, B, font.lab=2,cex.lab=1.6, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000, 360000))  
 abline(LR.1,col="red",lwd=2) 
+text(Reflectance~DN, B, Lab, cex=1.6, pos=3)
 
-plot(Reflectance~DN, G, font.lab=2,cex.lab=1.4, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000,  360000))  
-text(Reflectance~DN, G, Lab, cex=1.4, pos=3)
-abline(LR.2,col="red",lwd=2)  
 
-plot(Reflectance~DN, R, font.lab=2,cex.lab=1.4, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000,  360000))  
-text(Reflectance~DN, R, Lab, cex=1.4, pos=3)
+plot(Reflectance~DN, G, font.lab=2,cex.lab=1.6, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000,  360000))  
+abline(LR.2,col="red",lwd=2) 
+text(Reflectance~DN, G, Lab, cex=1.6, pos=3)
+ 
+
+plot(Reflectance~DN, R, font.lab=2,cex.lab=1.6, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000,  360000))  
 abline(LR.3,col="red",lwd=2) 
+text(Reflectance~DN, R, Lab, cex=1.6, pos=3)
 
-plot(Reflectance~DN, NIR, font.lab=2,cex.lab=1.4, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000, 360000))  
-text(Reflectance~DN, NIR, Lab,cex=1.4, pos=3)
+
+plot(Reflectance~DN, NIR, font.lab=2,cex.lab=1.6, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000, 360000))  
 abline(LR.4,col="red",lwd=2) 
+text(Reflectance~DN, NIR, Lab,cex=1.6, pos=3)
 
-plot(Reflectance~DN, Re, font.lab=2,cex.lab=1.4, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000, 360000))  
-text(Reflectance~DN, Re, Lab,  cex=1.4, pos=3)
+
+plot(Reflectance~DN, Re, font.lab=2,cex.lab=1.6, cex.axis=1.5, ylim=c(0, 1), xlim=c(15000, 360000))  
 abline(LR.5,col="red",lwd=2) 
+text(Reflectance~DN, Re, Lab,  cex=1.6, pos=3)
+
 
 
 #Plot all bands together
