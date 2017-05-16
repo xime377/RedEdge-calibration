@@ -250,7 +250,7 @@ plot(ndvi5, main="IN + ELC", breaks=brk, col=rev(terrain.colors(12)), axes=F, le
 
 plot(ndvi6,main="Atlas", breaks=brk, col=rev(terrain.colors(12)), axes=F, legend=F, box=F)
 
-plot(ndvi3, breaks=brk, col=rev(terrain.colors(12)), legend.only=T, horiz=T)
+plot(ndvi3, breaks=brk, col=rev(terrain.colors(12)), legend.only=T, horiz=T= main="Normalized Difference Vegetation Index")
 
 
 
