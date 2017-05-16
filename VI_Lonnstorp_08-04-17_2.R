@@ -149,13 +149,47 @@ to<-lapply(to.list,get)
 names(to)<-to.list
 
 #GI
-to.list<-ls(pattern="gi")
-to<-lapply(to.list,get)
-names(to)<-to.list
+gi.list<-ls(pattern="gi")
+gi.a<-lapply(to.list,get)
+names(gi.a)<-gi.list
+
+#ndvi
+ndvi.list<-ls(pattern="ndvi")
+ndvi.a<-lapply(to.list,get)
+names(ndvi.a)<-ndvi.list
+
+#ndre
+ndre.list<-ls(pattern="ndre")
+ndre.a<-lapply(to.list,get)
+names(ndre.a)<-ndre.list
+
+#evi
+evi.list<-ls(pattern="evi")
+evi.a<-lapply(to.list,get)
+names(evi.a)<-evi.list
+
+
 
 ##Export them
-  mapply(writeRaster,to, paste0("./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_",
+#tcari/osavi  
+mapply(writeRaster,to, paste0("./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_",
                           names(to)), 'GTiff', options="COMPRESS=NONE",overwrite=T)
+
+#gi
+mapply(writeRaster,gi.a, paste0("./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_",
+                                names(gi.a)), 'GTiff', options="COMPRESS=NONE",overwrite=T)
+  
+#ndvi
+mapply(writeRaster,ndvi.a, paste0("./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_",
+                                names(ndvi.a)), 'GTiff', options="COMPRESS=NONE",overwrite=T)
+
+#ndre
+mapply(writeRaster,ndre.a, paste0("./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_",
+                                names(ndre.a)), 'GTiff', options="COMPRESS=NONE",overwrite=T)
+
+#evi
+mapply(writeRaster,evi.a, paste0("./UAV imagery/Lonnstorp/2017_04_08/VI/Flight_2/Lonnstorp_08_04_2017_2_",
+                                names(evi.a)), 'GTiff', options="COMPRESS=NONE",overwrite=T)
 
 
 ##Vizualise all together
@@ -165,23 +199,17 @@ par(mfrow=c(3,2),
     mar = c(0,0,2,0))
 
 
-plot(tcariOsavi1, main="No calibration", axes=F)
-box(col="white")
+plot(tcariOsavi1, main="No calibration", axes=F, box=F)
 
-plot(tcariOsavi2, main="Brightness correction",axes=F)
-box(col="white")
+plot(tcariOsavi2, main="Brightness correction",axes=F, box=F)
 
-plot(tcariOsavi3, main="Histogram Matching",axes=F)
-box(col="white")
+plot(tcariOsavi3, main="Histogram Matching",axes=F, box=F)
 
-plot(tcariOsavi4,main="Sun elevation angle correction",axes=F)
-box(col="white")
+plot(tcariOsavi4,main="Sun elevation angle correction",axes=F, box=F)
 
-plot(tcariOsavi5, main="IN + ELC",axes=F)
-box(col="white")
+plot(tcariOsavi5, main="IN + ELC",axes=F, box=F)
 
-plot(tcariOsavi6,main="Atlas",axes=F)
-box(col="white")
+plot(tcariOsavi6,main="Atlas",axes=F, box=F)
 
 
 #gi
@@ -190,23 +218,17 @@ par(mfrow=c(3,2),
     mar = c(0,0,2,0))
 
 
-plot(gi1, main="No calibration", axes=F)
-box(col="white")
+plot(gi1, main="No calibration", axes=F, box=F)
 
-plot(gi2, main="Brightness correction",axes=F)
-box(col="white")
+plot(gi2, main="Brightness correction",axes=F, box=F)
 
-plot(gi3, main="Histogram Matching",axes=F)
-box(col="white")
+plot(gi3, main="Histogram Matching",axes=F, box=F)
 
-plot(gi4,main="Sun elevation angle correction",axes=F)
-box(col="white")
+plot(gi4,main="Sun elevation angle correction",axes=F, box=F)
 
-plot(gi5, main="IN + ELC",axes=F)
-box(col="white")
+plot(gi5, main="IN + ELC",axes=F, box=F)
 
-plot(gi6,main="Atlas",axes=F)
-box(col="white")
+plot(gi6,main="Atlas",axes=F, box=F)
 
 
 #ndvi
@@ -238,23 +260,17 @@ par(mfrow=c(3,2),
     mar = c(0,0,2,0))
 
 
-plot(ndre1, main="No calibration", axes=F)
-box(col="white")
+plot(ndre1, main="No calibration", axes=F, box=F)
 
-plot(ndre2, main="Brightness correction",axes=F)
-box(col="white")
+plot(ndre2, main="Brightness correction",axes=F, box=F)
 
-plot(ndre3, main="Histogram Matching",axes=F)
-box(col="white")
+plot(ndre3, main="Histogram Matching",axes=F, box=F)
 
-plot(ndre4,main="Sun elevation angle correction",axes=F)
-box(col="white")
+plot(ndre4,main="Sun elevation angle correction",axes=F, box=F)
 
-plot(ndre5, main="IN + ELC",axes=F)
-box(col="white")
+plot(ndre5, main="IN + ELC",axes=F, box=F)
 
-plot(ndre6,main="Atlas",axes=F)
-box(col="white")
+plot(ndre6,main="Atlas",axes=F, box=F)
 
 
 #evi
@@ -263,23 +279,17 @@ par(mfrow=c(3,2),
     mar = c(0,0,2,0))
 
 
-plot(evi1, main="No calibration", axes=F)
-box(col="white")
+plot(evi1, main="No calibration", axes=F, box=F)
 
-plot(evi2, main="Brightness correction",axes=F)
-box(col="white")
+plot(evi2, main="Brightness correction",axes=F, box=F)
 
-plot(evi3, main="Histogram Matching",axes=F)
-box(col="white")
+plot(evi3, main="Histogram Matching",axes=F, box=F)
 
-plot(evi4,main="Sun elevation angle correction",axes=F)
-box(col="white")
+plot(evi4,main="Sun elevation angle correction",axes=F, box=F)
 
-plot(evi5, main="IN + ELC",axes=F)
-box(col="white")
+plot(evi5, main="IN + ELC",axes=F, box=F)
 
-plot(evi6,main="Atlas",axes=F)
-box(col="white")
+plot(evi6,main="Atlas",axes=F, box=F)
 
 
 
@@ -289,3 +299,5 @@ box(col="white")
 
 
 endCluster()
+
+###############################################################
