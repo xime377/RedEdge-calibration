@@ -41,7 +41,7 @@ names(evi)<-"EVI"
 
 
 #Group VI
-VI.list<-ls(patter="i")
+VI.list<-ls(pattern="i")
 VI<-lapply(VI.list,get)
 names(VI)<-VI.list
 
