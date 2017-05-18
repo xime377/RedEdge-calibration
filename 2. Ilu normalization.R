@@ -18,17 +18,29 @@ Exif<- Exif[,c("FileName", "DateTimeOriginal", "Irradiance")]
 
 summary(Exif)
 
-#PAR (µmol /m s) decagon (W/m2/nm)
+#PAR  (W/m2/nm)
 PAR<-read.csv("./Calibration/Micasense test 08-04-17/Minicube/PAR_2017_08_04.csv", header=T)
 head(PAR)
 
 summary(PAR)
+
+#EM50 (W/m2/nm)
+EM<-read.csv("./Calibration/Micasense test 07-03-17/EM50/EM50.csv", header=T)
+head(EM)
+
+summary(EM)
+
 
 #Irradiance ASAD (W/m2) /nm?
 ASD<-read.csv("./Calibration/Irradiance.csv", header=T)
 head(ASD)
 
 summary(ASD)
+
+par(mfrow=c(5,3))
+plot(X13~Wavelength, data=ASD, xlim=c(0,1080))
+
+
 
 #Load images
 T.img.path<- list.files(path=("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/EC"), (pattern=".tif$"), 
@@ -47,7 +59,6 @@ for (i in 1:length(T.img))
                                 substr(names(T.img[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)  
 }
-
 
 
 #PAR normalization
