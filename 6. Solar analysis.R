@@ -21,7 +21,7 @@ T.img<- lapply(T.img.path,raster) #Load all bands
 names(T.img)<-T.img.path
 
 
-#Irradiance normalization
+#Sun elevation angle correction
 
 for (i in 1:length(T.img))   
 {
@@ -32,19 +32,5 @@ for (i in 1:length(T.img))
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-##################################################################################################################
-datetime<-"2017-02-23 14:13:59 CEST" #date of the measurement
-DOY<-DateToDOY(datetime)  #numeric vector containing the coverted date in Day Of the Year (DOY).
+#End
+###################################################################################################################
