@@ -1,6 +1,6 @@
 #Set WD
-#setwd("E:/Ximena/MSc Thesis/Results")
-setwd("D:/Google Drive/MSc Thesis/Results")
+setwd("H:/Ximena/MSc Thesis/Results")
+#setwd("D:/Google Drive/MSc Thesis/Results")
 
 ###Load libraries
 if(!require(devtools)) install.packages("devtools") #Dependencies of F..DP
@@ -261,7 +261,7 @@ Tar.Conv<-cbind(GC.9[,c(1:2)],GC.23[,2],GC.44[,2],GC.50[,2],GC.80[,2],
 names(Tar.Conv)<-c("CWavelength","9","23","44","50","80","9.SD","23.SD", "44.SD","50.SD","80.SD")
 
 #Export as csv
-write.csv(Tar.Conv,"Mean_Ref.csv")
+write.csv(Tar.Conv,"./Calibration/Mean_RefT.csv")
 
 
 
