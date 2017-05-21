@@ -101,18 +101,18 @@ plot(GCP24, add=T)
 
 ##Extract values of 0.6 m buffer from the gcps (max FOV of the ASD)
 #08-04
-tcario1 <- lapply(T.O1, extract, GCP8, buffer=0.6, fun=mean)
-GI.1 <- lapply(gi1, extract, GCP8, buffer=0.6, fun=mean)
-NDVI.1 <- lapply(ndvi1, extract, GCP8, buffer=0.6, fun=mean)
-NDRE.1 <- lapply(ndre1, extract, GCP8, buffer=0.6, fun=mean)
-EVI.1 <- lapply(evi1, extract, GCP8, buffer=0.6, fun=mean)
+tcario8 <- lapply(T.O1, extract, GCP8, buffer=0.6, fun=mean)
+GI.8 <- lapply(gi1, extract, GCP8, buffer=0.6, fun=mean)
+NDVI.8 <- lapply(ndvi1, extract, GCP8, buffer=0.6, fun=mean)
+NDRE.8 <- lapply(ndre1, extract, GCP8, buffer=0.6, fun=mean)
+EVI.8<- lapply(evi1, extract, GCP8, buffer=0.6, fun=mean)
 
 #24-03
-tcario2 <- lapply(T.O2, extract, GCP8, buffer=0.6, fun=mean)
-GI.2 <- lapply(gi2, extract, GCP8, buffer=0.6, fun=mean)
-NDVI.2 <- lapply(ndvi2, extract, GCP8, buffer=0.6, fun=mean)
-NDRE.2 <- lapply(ndre2, extract, GCP8, buffer=0.6, fun=mean)
-EVI.2 <- lapply(evi2, extract, GCP8, buffer=0.6, fun=mean)
+tcario24 <- lapply(T.O2, extract, GCP8, buffer=0.6, fun=mean)
+GI.24 <- lapply(gi2, extract, GCP8, buffer=0.6, fun=mean)
+NDVI.24 <- lapply(ndvi2, extract, GCP8, buffer=0.6, fun=mean)
+NDRE.24 <- lapply(ndre2, extract, GCP8, buffer=0.6, fun=mean)
+EVI.24 <- lapply(evi2, extract, GCP8, buffer=0.6, fun=mean)
 
 #Remove data execpt the extracted values
 rm(list=ls(pattern="T.O"))
@@ -122,14 +122,16 @@ rm(list=ls(pattern="ndre"))
 rm(list=ls(pattern="evi"))
 rm(list=ls(pattern="GCP"))
 
+#Group values
+E.V<-ls()
+E.V<-lapply(E.V,get)
 
 #Save result
 for(i in 1:length(ls())) {
   write.csv(
-    mget(ls()[[i]]),
+    E.V,
     file = paste0("./Validation/DN_mean/", ls()[[i]], ".csv"))
 }
-
 
 #End
 ######################################################################
