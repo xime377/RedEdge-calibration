@@ -122,16 +122,13 @@ rm(list=ls(pattern="ndre"))
 rm(list=ls(pattern="evi"))
 rm(list=ls(pattern="GCP"))
 
-#Group values
-E.V<-ls()
-E.V<-lapply(E.V,get)
-
 #Save result
 for(i in 1:length(ls())) {
   write.csv(
-    E.V,
+    mget(ls()[[i]]),
     file = paste0("./Validation/DN_mean/", ls()[[i]], ".csv"))
 }
+
 
 #End
 ######################################################################
