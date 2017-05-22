@@ -18,28 +18,10 @@ Exif<- Exif[,c("FileName", "DateTimeOriginal", "Irradiance", "PAR")]
 
 summary(Exif)
 
-#PAR  (W/m2/nm)
-PAR<-read.csv("./Calibration/Micasense test 08-04-17/Minicube/PAR_2017_08_04.csv", header=T)
-head(PAR)
 
-summary(PAR)
-
-#EM50 (W/m2/nm)
-EM<-read.csv("./Calibration/Micasense test 07-03-17/EM50/EM50.csv", header=T)
-head(EM)
-
-summary(EM)
-
-
-#Irradiance ASAD (W/m2) /nm?
-ASD<-read.csv("./Calibration/Irradiance.csv", header=T)
-head(ASD)
-
-summary(ASD)
-
-par(mfrow=c(5,3))
-plot(X13~Wavelength, data=ASD, xlim=c(0,1080))
-
+#Normalizing values
+Exif$PARN<-Exif$PAR/(max(Exif$PAR))
+Exif$IrradianceN<-Exif$Irradiance/(max(Exif$Irradiance))
 
 
 #Load images
@@ -51,25 +33,24 @@ names(T.img)<-T.img.path
 
 
 #Irradiance normalization
-
 for (i in 1:length(T.img))   
 {
-  T.img[[i]]<-(T.img[[i]]* (1-Exif$Irradiance[i]))
-  writeRaster(T.img[[i]],paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/IM_EC/",
-                                substr(names(T.img[i]),58,67),".tif"), datatype="INT2U",
+  T.img[[i]]<-(T.img[[i]]* (Exif$IrradianceN[i])) #Normalized irradiance
+  writeRaster(T.img[[i]],paste0("./UAV imagery/Lonnstorp/2017_04_30/Micasense/Flight_2/IC/",
+                                substr(names(T.img[i]),59,68),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)  
 }
+
 
 
 #PAR normalization
 for (i in 1:length(T.img))   
 {
-  T.img[[i]]<-(T.img[[i]]* (1-Exif$PAR[i]))
-  writeRaster(T.img[[i]],paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/PAR/",
+  T.img[[i]]<-(T.img[[i]]* (Exif$PARN[i]))
+  writeRaster(T.img[[i]],paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/PARN/",
                                 substr(names(T.img[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)  
 }
 
 
-
-##########################################################################################
+####################################################################################
