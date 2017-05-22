@@ -1,11 +1,11 @@
 ###Set WD
-#setwd("E:/Ximena/MSc Thesis/Results")
-setwd("D:/Google Drive/MSc Thesis/Results")
+setwd("H:/Ximena/MSc Thesis/Results")
+#setwd("D:/Google Drive/MSc Thesis/Results")
 
 ###Load libraries
 library(raster)
 #library("sf")
-library(sp)
+
 
 
 ##Import GCPs
@@ -65,25 +65,25 @@ T.O2<- lapply(T.O.path2,raster)
 names(T.O2)<-T.O.path2
 
 #gi
-gi.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="tcariOsavi.*.tif$", 
+gi.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="gi.*.tif$", 
                         full.names=T)
 gi2<- lapply(gi.path2,raster)
 names(gi2)<-gi.path2
 
 #ndvi
-ndvi.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="tcariOsavi.*.tif$", 
+ndvi.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="ndvi.*.tif$", 
                        full.names=T)
 ndvi2<- lapply(ndvi.path2,raster)
 names(ndvi2)<-ndvi.path2
 
 #ndre
-ndre.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="tcariOsavi.*.tif$", 
+ndre.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="ndre.*.tif$", 
                        full.names=T)
 ndre2<- lapply(ndre.path2,raster)
 names(ndre2)<-ndre.path2
 
 #evi
-evi.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="tcariOsavi.*.tif$", 
+evi.path2 <- list.files(path=("./UAV imagery/Lonnstorp/2017_03_24/VI/Flight_2/"), pattern="evi.*.tif$", 
                        full.names=T)
 evi2<- lapply(evi.path2,raster)
 names(evi2)<-evi.path2
@@ -108,11 +108,11 @@ NDRE.8 <- lapply(ndre1, extract, GCP8, buffer=0.6, fun=mean)
 EVI.8<- lapply(evi1, extract, GCP8, buffer=0.6, fun=mean)
 
 #24-03
-tcario24 <- lapply(T.O2, extract, GCP8, buffer=0.6, fun=mean)
-GI.24 <- lapply(gi2, extract, GCP8, buffer=0.6, fun=mean)
-NDVI.24 <- lapply(ndvi2, extract, GCP8, buffer=0.6, fun=mean)
-NDRE.24 <- lapply(ndre2, extract, GCP8, buffer=0.6, fun=mean)
-EVI.24 <- lapply(evi2, extract, GCP8, buffer=0.6, fun=mean)
+tcario24 <- lapply(T.O2, extract, GCP24, buffer=0.6, fun=mean)
+GI.24 <- lapply(gi2, extract, GCP24, buffer=0.6, fun=mean)
+NDVI.24 <- lapply(ndvi2, extract, GCP24, buffer=0.6, fun=mean)
+NDRE.24 <- lapply(ndre2, extract, GCP24, buffer=0.6, fun=mean)
+EVI.24 <- lapply(evi2, extract, GCP24, buffer=0.6, fun=mean)
 
 #Remove data execpt the extracted values
 rm(list=ls(pattern="T.O"))
@@ -123,7 +123,7 @@ rm(list=ls(pattern="evi"))
 rm(list=ls(pattern="GCP"))
 
 #Save result
-for(i in 1:length(ls())) {
+for(i in 1:11) {
   write.csv(
     mget(ls()[[i]]),
     file = paste0("./Validation/DN_mean/", ls()[[i]], ".csv"))
