@@ -1,10 +1,9 @@
 #Set WD
-#setwd("E:/Ximena/MSc Thesis/Results")
-setwd("D:/Google Drive/MSc Thesis/Results")
+setwd("H:/Ximena/MSc Thesis/Results")
+#setwd("D:/Google Drive/MSc Thesis/Results")
 
 ###Load libraries
 library(raster)
-library(ggplot2)
 
 
 ##Load files
@@ -14,7 +13,8 @@ head(Exif)
 names(Exif)
 
 
-Exif<- Exif[,c("FileName", "DateTimeOriginal", "Irradiance")]
+Exif<- Exif[,c("FileName", "DateTimeOriginal", "Irradiance", "PAR")]
+
 
 summary(Exif)
 
@@ -62,14 +62,14 @@ for (i in 1:length(T.img))
 
 
 #PAR normalization
-
 for (i in 1:length(T.img))   
 {
-  T.img[[i]]<-(T.img[[i]]* (1-PAR$Irradiance[i]))
+  T.img[[i]]<-(T.img[[i]]* (1-Exif$PAR[i]))
   writeRaster(T.img[[i]],paste0("./UAV imagery/Lonnstorp/2017_04_08/Micasense/Flight_2/PAR/",
-                                substr(names(T.img[i]),59,68),".tif"), datatype="INT2U",
+                                substr(names(T.img[i]),58,67),".tif"), datatype="INT2U",
               options="COMPRESS=NONE", overwrite=T)  
 }
 
 
 
+##########################################################################################
