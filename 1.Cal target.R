@@ -62,7 +62,7 @@ for (i in 1:length(Targets))   #For all the df on the list
 {
   Targets[[i]] <- Ref.melt(Targets[[i]])   #melt data
   assign(paste0("M.",names(Targets[i])), as.data.frame(Targets[[i]]))  #output as df
-  }
+}
 
 
 #Plot reflectance curve per target
@@ -95,8 +95,8 @@ names(Targets.T)<-Targets.m
 
 for (i in 1:length(Targets.T))   #For all the df on the list
 {
-Targets.T[[i]] <- summarySE(Targets.T[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
-assign(paste0("S.",names(Targets.T[i])),as.data.frame(Targets.T[[i]]))
+  Targets.T[[i]] <- summarySE(Targets.T[[i]], measurevar="Reflectance", groupvars=c("Replicate"))
+  assign(paste0("S.",names(Targets.T[i])),as.data.frame(Targets.T[[i]]))
 }
 
 
@@ -132,8 +132,8 @@ r50<-plot.repR(R.Mica50Tgt)
 r80<-plot.repR(R.Mica80Tgt)
 
 plot_grid(r9,r23,r44,r50,r80, align="h",
-labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = -8.5,
-vjust = 2.5)
+          labels = c("10%","23%", "44%","50%", "80%"), label_size = 14, hjust = -8.5,
+          vjust = 2.5)
 
 
 plot_grid(r9,r23,r44,r50,r80, align="h",
@@ -157,7 +157,7 @@ for (i in 1:length(Targets.r))   #For all the df on the list
 for (i in 1:length(Targets.r))   #For all the df on the list
 {
   Targets.r[[i]]$cv <- (Targets.r[[i]]$sd/Targets.r[[i]]$Reflectance)*100
-  }
+}
 summary(Targets.r$R.M23Tgt)
 
 
@@ -177,39 +177,6 @@ summary(Targets.r$R.M23Tgt)
 summary(Targets.r$R.M44Tgt)
 summary(Targets.r$R.Mica50Tgt)
 summary(Targets.r$R.Mica80Tgt)
-
-
-#########################################
-###Tests to see near Lambertian properties
-
-#Normality test -> Shapiro test (w<0.99 and pvalue<0.05 shows non-normal distribution https://stats.stackexchange.com/questions/15696/interpretation-of-shapiro-wilk-test)
-n9.test<-aggregate(Reflectance~Replicate,data=M.M9Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n23.test<-aggregate(Reflectance~Replicate,data=M.M23Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n44.test<-aggregate(Reflectance~Replicate,data=M.M44Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n50.test<-aggregate(Reflectance~Replicate,data=M.Mica50Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-n80.test<-aggregate(Reflectance~Replicate,data=M.Mica80Tgt, function(x) {y <- shapiro.test(x); c(y$statistic, y$p.value)}) #shapiro test
-
-##Plot multiple qqplots together (https://stats.stackexchange.com/questions/101274/how-to-interpret-a-qq-plot)
-par(mfrow=c(2,3)) #plots 2 by 3 window
-for (i in c(2:24)){
-  qqnorm(Mica50Tgt[,i],main=names(Mica50Tgt)[i])
-}
-
-
-#Comparison test
-#anova test->parametric
-aov.t9<-lm(Reflectance~Replicate, R.M9Tgt) 
-anova(aov.t9)
-summary(aov.t9)
-outp<-HSD.test(aov.t9, "Replicate")
-
-
-#Kruskal-Wallis test (less than 0.05, different)-> non-parametric
-kruskal.test(Reflectance~Replicate, R.M9Tgt)
-kruskal.test(Reflectance~Replicate, R.M23Tgt)
-kruskal.test(Reflectance~Replicate, R.M44Tgt)
-kruskal.test(Reflectance~Replicate, R.Mica50Tgt)
-kruskal.test(Reflectance~Replicate, R.Mica80Tgt)
 
 
 ##############################################
@@ -241,19 +208,19 @@ plot.graySM(Ref.M)
 #Gaussian convolution
 
 GC.9<-fGaussianConvolMultiWl(Wl = M.M9Tgt[,1], Ref = M.M9Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
-                              convol = "Gaussian", weights = NULL)
+                             convol = "Gaussian", weights = NULL)
 
 GC.23<-fGaussianConvolMultiWl(Wl = M.M23Tgt[,1], Ref = M.M23Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
-                             convol = "Gaussian", weights = NULL)
+                              convol = "Gaussian", weights = NULL)
 
 GC.44<-fGaussianConvolMultiWl(Wl = M.M44Tgt[,1], Ref = M.M44Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
-                             convol = "Gaussian", weights = NULL)
+                              convol = "Gaussian", weights = NULL)
 
 GC.50<-fGaussianConvolMultiWl(Wl = M.Mica50Tgt[,1], Ref = M.Mica50Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
                               convol = "Gaussian")
 
 GC.80<-fGaussianConvolMultiWl(Wl = M.Mica80Tgt[,1], Ref = M.Mica80Tgt[,3], CWl.v = MicaR[,3], FWHM.v = MicaR[,4], 
-                                  convol = "Gaussian")
+                              convol = "Gaussian")
 
 
 Tar.Conv<-cbind(GC.9[,c(1:2)],GC.23[,2],GC.44[,2],GC.50[,2],GC.80[,2],
@@ -264,8 +231,8 @@ names(Tar.Conv)<-c("CWavelength","9","23","44","50","80","9.SD","23.SD", "44.SD"
 write.csv(Tar.Conv,"./Calibration/Mean_RefT.csv")
 
 
-
 #######################################
 #Plot Gray target reflectance RGB,Re,NIR
 par(mfrow=c(1,1)) #plots 1
 plot(RefConvol~CWl.v, GC.23, xlab="Wavelength (nm)") #test
+
