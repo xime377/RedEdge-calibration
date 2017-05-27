@@ -236,3 +236,43 @@ write.csv(Tar.Conv,"./Calibration/Mean_RefT.csv")
 par(mfrow=c(1,1)) #plots 1
 plot(RefConvol~CWl.v, GC.23, xlab="Wavelength (nm)") #test
 
+
+################################################
+###Tests to see near Lambertian properties
+
+#Comparison test
+#anova test->parametric
+aov.t9<-lm(Reflectance~Replicate, R.M9Tgt) 
+anova(aov.t9)
+summary(aov.t9)
+outp9<-HSD.test(aov.t9, "Replicate")
+
+aov.t23<-lm(Reflectance~Replicate, R.M23Tgt) 
+anova(aov.t23)
+summary(aov.t23)
+outp23<-HSD.test(aov.t23, "Replicate")
+
+aov.t44<-lm(Reflectance~Replicate, R.M44Tgt) 
+anova(aov.t44)
+summary(aov.t44)
+outp44<-HSD.test(aov.t44, "Replicate")
+
+aov.50<-lm(Reflectance~Replicate, R.Mica50Tgt) 
+anova(aov.50)
+summary(aov.50)
+outp50<-HSD.test(aov.50, "Replicate")
+
+aov.80<-lm(Reflectance~Replicate, R.Mica80Tgt) 
+anova(aov.80)
+summary(aov.80)
+outp80<-HSD.test(aov.80, "Replicate")
+
+#Kruskal-Wallis test (less than 0.05, different)-> non-parametric
+kruskal.test(Reflectance~Replicate, R.M9Tgt)
+kruskal.test(Reflectance~Replicate, R.M23Tgt)
+kruskal.test(Reflectance~Replicate, R.M44Tgt)
+kruskal.test(Reflectance~Replicate, R.Mica50Tgt)
+kruskal.test(Reflectance~Replicate, R.Mica80Tgt)
+
+
+############################################################################
