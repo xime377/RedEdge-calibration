@@ -1,3 +1,4 @@
+###Calculates statistics of the reflectance targets##
 #Set WD
 setwd("H:/Ximena/MSc Thesis/Results")
 #setwd("D:/Google Drive/MSc Thesis/Results")
